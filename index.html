@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeju Hidden Quest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tangerine: '#FF8200',
+                        tangerineDark: '#E67600',
+                        ocean: '#005BAC',
+                        bglight: '#F8F9FA',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'shake': 'shake 0.5s',
+                        'pop': 'pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                        'slide-up': 'slide-up 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-5px)' },
+                            '20%, 40%, 60%, 80%': { transform: 'translateX(5px)' },
+                        },
+                        pop: {
+                            '0%': { transform: 'scale(0.8)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        'slide-up': {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #e5e7eb; 
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+        .mobile-container {
+            width: 100%;
+            max-width: 480px;
+            background-color: #F8F9FA;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        .hidden-state { display: none !important; }
+        
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-container no-scrollbar flex flex-col">
+        
+        <!-- ================= STATE 1: Arrival & Quest Detail ================= -->
+        <div id="state1" class="app-state active flex flex-col min-h-screen bg-bglight">
+            <!-- Header -->
+            <header class="flex justify-between items-center p-4 bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-10 border-b border-gray-100">
+                <div class="flex items-center gap-2.5">
+                    <div class="bg-gradient-to-br from-tangerine to-orange-400 text-white p-1.5 rounded-xl shadow-sm">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </div>
+                    <h1 class="font-bold text-gray-900 text-lg tracking-tight">Jeju Hidden Quest</h1>
+                </div>
+                <div class="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-full border border-gray-200">
+                    <svg class="w-4 h-4 text-tangerine" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 7a2 2 0 114 0v1h-4V7zm6 3v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4a6.002 6.002 0 015-5.917V5a1 1 0 112 0v.083A6.002 6.002 0 0114 10z"></path></svg>
+                    <span id="balance1" class="font-bold text-sm text-gray-700">0 Tokens</span>
+                </div>
+            </header>
+
+            <!-- Hero Image -->
+            <div class="relative h-[280px] w-full">
+                <!-- Fallback to a placeholder if the local path is broken -->
+                <img src="./assets/hanok_restaurant.png" 
+                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1580443883392-50d4fdbba6c5?auto=format&fit=crop&w=800&q=80';"
+                     alt="Grandma Kim's Bibimbap House" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-5 left-5 right-5">
+                    <h2 class="text-white font-extrabold text-3xl drop-shadow-md mb-1 leading-tight">Grandma Kim's Bibimbap House</h2>
+                    <p class="text-gray-300 text-sm font-medium tracking-wide">김할머니 비빔밥</p>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6 flex-1 flex flex-col bg-white rounded-t-3xl -mt-6 relative z-0 shadow-[0_-10px_20px_rgba(0,0,0,0.05)]">
+                <div class="flex flex-wrap gap-2 mb-5">
+                    <span class="bg-blue-50 text-ocean text-xs font-bold px-3 py-1.5 rounded-lg border border-blue-100">💎 Hidden Gem</span>
+                    <span class="bg-orange-50 text-tangerineDark text-xs font-bold px-3 py-1.5 rounded-lg border border-orange-100">🍲 Traditional Food</span>
+                    <span class="bg-yellow-50 text-yellow-700 text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 border border-yellow-100">
+                        <svg class="w-3.5 h-3.5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 7a2 2 0 114 0v1h-4V7zm6 3v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4a6.002 6.002 0 015-5.917V5a1 1 0 112 0v.083A6.002 6.002 0 0114 10z"></path></svg>
+                        100 Tokens
+                    </span>
+                </div>
+                
+                <p class="text-gray-600 text-[15px] leading-relaxed mb-8">
+                    Operating since 1980, Grandma Kim's is a legendary spot among locals. Famous for authentic Jeju flavors, using fresh mountain vegetables and a secret gochujang recipe passed down for generations. Explore the surroundings to find clues and claim your discovery!
+                </p>
+
+                <!-- Action Buttons -->
+                <div class="mt-auto flex flex-col gap-3.5 pb-2">
+                    <button class="w-full py-3.5 px-4 bg-white border-2 border-gray-100 text-gray-700 font-bold rounded-2xl flex items-center justify-center gap-2 hover:bg-gray-50 hover:border-gray-200 transition-all active:scale-[0.98] duration-150">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                        View Translated Menu
+                    </button>
+                    <button onclick="handleClaim()" class="w-full py-4 px-4 bg-gradient-to-r from-tangerine to-orange-500 text-white font-bold text-lg rounded-2xl shadow-[0_8px_20px_rgba(255,130,0,0.3)] flex items-center justify-center gap-2 animate-pulse-fast hover:from-orange-500 hover:to-orange-600 transition-all active:scale-[0.98] duration-150">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        Claim Location Token
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= STATE 2: Anti-Cheat Modal ================= -->
+        <div id="antiCheatModal" class="hidden-state fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-gray-900/40 backdrop-blur-sm transition-opacity p-0 sm:p-4">
+            <div class="bg-white w-full max-w-[480px] rounded-t-[32px] sm:rounded-[32px] p-6 shadow-2xl animate-slide-up sm:animate-pop relative">
+                <button onclick="closeAntiCheat()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 bg-gray-100 p-2 rounded-full transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                
+                <div class="text-center mb-6 mt-4">
+                    <div class="inline-block bg-orange-100 p-3 rounded-full mb-3">
+                        <span class="text-3xl">🕵️‍♂️</span>
+                    </div>
+                    <h3 class="text-2xl font-extrabold text-gray-900 mb-2">Prove You Are Here!</h3>
+                    <p class="text-gray-500 text-sm px-4">To prevent fake check-ins, please answer this quick question based on your surroundings:</p>
+                </div>
+                
+                <div class="bg-blue-50/50 border border-blue-100 rounded-2xl p-5 mb-6 shadow-inner">
+                    <p class="font-bold text-ocean text-center text-lg leading-snug">"What color is the old wooden mailbox next to the entrance door?"</p>
+                </div>
+
+                <div class="flex flex-col gap-3 pb-4 sm:pb-0">
+                    <button onclick="answerQuestion('blue', this)" class="w-full py-4 px-6 bg-white border-2 border-gray-100 text-gray-700 font-bold text-lg rounded-2xl hover:border-blue-300 hover:bg-blue-50 transition-all active:scale-[0.98] text-left flex justify-between items-center group">
+                        A. Blue
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-200 group-hover:border-blue-400"></div>
+                    </button>
+                    <button onclick="answerQuestion('red', this)" class="w-full py-4 px-6 bg-white border-2 border-gray-100 text-gray-700 font-bold text-lg rounded-2xl hover:border-tangerine hover:bg-orange-50 transition-all active:scale-[0.98] text-left flex justify-between items-center group">
+                        B. Red
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-200 group-hover:border-tangerine"></div>
+                    </button>
+                    <button onclick="answerQuestion('yellow', this)" class="w-full py-4 px-6 bg-white border-2 border-gray-100 text-gray-700 font-bold text-lg rounded-2xl hover:border-yellow-400 hover:bg-yellow-50 transition-all active:scale-[0.98] text-left flex justify-between items-center group">
+                        C. Yellow
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-200 group-hover:border-yellow-400"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= STATE 3: Success Animation ================= -->
+        <div id="state3" class="hidden-state app-state flex flex-col h-screen bg-gradient-to-b from-tangerine to-orange-500 items-center justify-center p-6 text-center relative overflow-hidden">
+            <!-- Confetti Canvas -->
+            <div class="absolute inset-0 pointer-events-none z-10" id="confetti-container"></div>
+            
+            <div class="relative z-20 flex flex-col items-center">
+                <div class="bg-white rounded-full p-5 mb-8 shadow-2xl animate-pop flex items-center justify-center">
+                    <svg class="w-16 h-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                
+                <h2 class="text-4xl font-extrabold text-white mb-3 animate-slide-up" style="animation-delay: 0.1s;">Awesome!</h2>
+                <p class="text-white/90 text-xl font-medium mb-12 animate-slide-up" style="animation-delay: 0.2s;">You actually found it!</p>
+                
+                <div class="bg-white/20 backdrop-blur-xl rounded-3xl p-8 border border-white/40 w-full max-w-sm mb-12 animate-slide-up shadow-2xl" style="animation-delay: 0.3s;">
+                    <div class="flex justify-center mb-3">
+                        <div class="bg-yellow-400/20 p-4 rounded-full">
+                            <svg class="w-12 h-12 text-yellow-300 drop-shadow-lg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 7a2 2 0 114 0v1h-4V7zm6 3v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4a6.002 6.002 0 015-5.917V5a1 1 0 112 0v.083A6.002 6.002 0 0114 10z"></path></svg>
+                        </div>
+                    </div>
+                    <p class="text-white font-extrabold text-2xl mb-1">+100 Jeju Tokens</p>
+                    <p class="text-white/80 text-sm font-medium uppercase tracking-wider">added to your wallet</p>
+                </div>
+                
+                <button onclick="goStore()" class="w-full max-w-sm py-4.5 px-6 bg-white text-tangerine font-extrabold text-lg rounded-2xl shadow-[0_10px_25px_rgba(0,0,0,0.15)] hover:bg-gray-50 transition-all active:scale-[0.98] duration-150 animate-slide-up" style="animation-delay: 0.4s;">
+                    Go to Reward Store
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= STATE 4: Reward Marketplace ================= -->
+        <div id="state4" class="hidden-state app-state flex flex-col min-h-screen bg-bglight">
+            <!-- Header -->
+            <header class="p-5 bg-white shadow-sm sticky top-0 z-10 flex justify-between items-center border-b border-gray-100">
+                <h1 class="font-extrabold text-gray-900 text-2xl tracking-tight">Reward Store</h1>
+                <div class="bg-gray-50 px-3.5 py-2 rounded-xl shadow-inner border border-gray-100 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-tangerine" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 7a2 2 0 114 0v1h-4V7zm6 3v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4a6.002 6.002 0 015-5.917V5a1 1 0 112 0v.083A6.002 6.002 0 0114 10z"></path></svg>
+                    <span id="balance4" class="font-bold text-gray-800 text-sm">100</span>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="p-5 flex-1 flex flex-col gap-4 overflow-y-auto">
+                <p class="text-gray-500 text-sm font-medium mb-1">Redeem your tokens for exclusive experiences.</p>
+                
+                <!-- Card 1 (Locked) -->
+                <div class="bg-white rounded-[24px] p-5 shadow-sm border border-gray-100 flex flex-col relative overflow-hidden opacity-75">
+                    <div class="absolute top-0 right-0 bg-gray-100 text-gray-500 text-xs font-bold px-4 py-1.5 rounded-bl-[16px]">Locked 🔒</div>
+                    <div class="flex items-start gap-4 mb-5 mt-2">
+                        <div class="bg-gray-50 p-3.5 rounded-2xl border border-gray-100">
+                            <span class="text-2xl">🏛️</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-gray-800 text-[17px] mb-1 leading-tight">Skip the Line: Jeju National Museum</h3>
+                            <div class="flex items-center gap-1 mt-1.5">
+                                <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 7a2 2 0 114 0v1h-4V7zm6 3v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4a6.002 6.002 0 015-5.917V5a1 1 0 112 0v.083A6.002 6.002 0 0114 10z"></path></svg>
+                                <p class="text-sm font-bold text-gray-500">150 Tokens</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full h-2 bg-gray-100 rounded-full mb-4 overflow-hidden">
+                        <div class="h-full bg-tangerine w-[66%] rounded-full opacity-50"></div>
+                    </div>
+                    <button disabled class="w-full py-3.5 bg-gray-100 text-gray-400 font-bold rounded-xl cursor-not-allowed text-sm">
+                        Need 50 more tokens
+                    </button>
+                </div>
+
+                <!-- Card 2 (Unlocked) -->
+                <div class="bg-white rounded-[24px] p-5 shadow-[0_8px_20px_rgba(0,0,0,0.06)] border-2 border-tangerine flex flex-col relative overflow-hidden transform transition hover:-translate-y-1">
+                    <div class="absolute top-0 right-0 bg-tangerine text-white text-xs font-bold px-4 py-1.5 rounded-bl-[16px] shadow-sm">Available ✨</div>
+                    <div class="flex items-start gap-4 mb-5 mt-2">
+                        <div class="bg-orange-50 p-3.5 rounded-2xl border border-orange-100">
+                            <span class="text-2xl">👘</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-gray-900 text-[17px] mb-1 leading-tight">Free Hanbok Rental (1 Hour)</h3>
+                            <div class="flex items-center gap-1 mt-1.5">
+                                <svg class="w-4 h-4 text-tangerine" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 7a2 2 0 114 0v1h-4V7zm6 3v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4a6.002 6.002 0 015-5.917V5a1 1 0 112 0v.083A6.002 6.002 0 0114 10z"></path></svg>
+                                <p class="text-sm font-bold text-tangerine">100 Tokens</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="redeemReward('hanbok')" class="w-full py-3.5 bg-tangerine text-white font-bold rounded-xl shadow-md hover:bg-tangerineDark active:scale-[0.98] transition-all text-sm">
+                        Redeem Now
+                    </button>
+                </div>
+
+                <!-- Card 3 (Locked) -->
+                <div class="bg-white rounded-[24px] p-5 shadow-sm border border-gray-100 flex flex-col relative overflow-hidden opacity-75">
+                    <div class="absolute top-0 right-0 bg-gray-100 text-gray-500 text-xs font-bold px-4 py-1.5 rounded-bl-[16px]">Locked 🔒</div>
+                    <div class="flex items-start gap-4 mb-5 mt-2">
+                        <div class="bg-gray-50 p-3.5 rounded-2xl border border-gray-100">
+                            <span class="text-2xl">🍦</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-gray-800 text-[17px] mb-1 leading-tight">Free Tangerine Ice Cream</h3>
+                            <div class="flex items-center gap-1 mt-1.5">
+                                <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 7a2 2 0 114 0v1h-4V7zm6 3v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4a6.002 6.002 0 015-5.917V5a1 1 0 112 0v.083A6.002 6.002 0 0114 10z"></path></svg>
+                                <p class="text-sm font-bold text-gray-500">120 Tokens</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full h-2 bg-gray-100 rounded-full mb-4 overflow-hidden">
+                        <div class="h-full bg-tangerine w-[83%] rounded-full opacity-50"></div>
+                    </div>
+                    <button disabled class="w-full py-3.5 bg-gray-100 text-gray-400 font-bold rounded-xl cursor-not-allowed text-sm">
+                        Need 20 more tokens
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= STATE 4: Redeem Modal ================= -->
+        <div id="redeemModal" class="hidden-state fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-md transition-opacity p-5">
+            <div class="bg-white w-full max-w-[340px] rounded-[32px] p-8 shadow-2xl animate-pop text-center relative overflow-hidden">
+                <div class="absolute top-0 left-0 right-0 h-2 bg-tangerine"></div>
+                
+                <button onclick="closeRedeem()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 bg-gray-50 p-2 rounded-full transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                
+                <div class="mb-5 mt-2">
+                    <h3 class="text-2xl font-extrabold text-gray-900 mb-1">Show to Staff</h3>
+                    <p class="text-tangerine font-bold text-sm bg-orange-50 inline-block px-3 py-1 rounded-lg">Free Hanbok Rental (1 Hour)</p>
+                </div>
+                
+                <div class="bg-white border-2 border-dashed border-gray-200 rounded-2xl p-5 mb-5 inline-block shadow-sm">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=JejuHiddenQuest_Hanbok_Verification" alt="QR Code" class="w-44 h-44 mx-auto">
+                </div>
+                
+                <div class="flex items-center justify-center gap-2 text-gray-500 bg-gray-50 py-2.5 rounded-xl">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <p class="text-sm font-semibold">Expires in <span class="text-tangerine">14:59</span></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let tokens = 0;
+
+        function showState(stateId) {
+            document.querySelectorAll('.app-state').forEach(el => el.classList.add('hidden-state'));
+            document.getElementById(stateId).classList.remove('hidden-state');
+            
+            // Trigger confetti effect on success screen
+            if(stateId === 'state3') {
+                createConfetti();
+            }
+        }
+
+        function handleClaim() {
+            document.getElementById('antiCheatModal').classList.remove('hidden-state');
+        }
+
+        function closeAntiCheat() {
+            document.getElementById('antiCheatModal').classList.add('hidden-state');
+        }
+
+        function answerQuestion(answer, btn) {
+            // Remove previous error states from all buttons
+            const buttons = btn.parentElement.querySelectorAll('button');
+            buttons.forEach(b => {
+                b.classList.remove('border-red-400', 'bg-red-50', 'text-red-700');
+            });
+
+            if (answer === 'red') {
+                // Correct answer
+                btn.classList.add('border-green-400', 'bg-green-50', 'text-green-700');
+                
+                setTimeout(() => {
+                    closeAntiCheat();
+                    tokens = 100;
+                    document.getElementById('balance1').innerText = tokens + ' Tokens';
+                    document.getElementById('balance4').innerText = tokens;
+                    
+                    setTimeout(() => {
+                        showState('state3');
+                    }, 200);
+                }, 400);
+            } else {
+                // Wrong answer
+                btn.classList.add('animate-shake', 'border-red-400', 'bg-red-50', 'text-red-700');
+                
+                // Add a small vibration if supported by device
+                if (navigator.vibrate) navigator.vibrate(200);
+
+                setTimeout(() => {
+                    btn.classList.remove('animate-shake');
+                }, 500);
+            }
+        }
+
+        function goStore() {
+            showState('state4');
+        }
+
+        function redeemReward(id) {
+            if (id === 'hanbok') {
+                document.getElementById('redeemModal').classList.remove('hidden-state');
+            }
+        }
+
+        function closeRedeem() {
+            document.getElementById('redeemModal').classList.add('hidden-state');
+        }
+
+        function createConfetti() {
+            const container = document.getElementById('confetti-container');
+            container.innerHTML = '';
+            const colors = ['#FF8200', '#005BAC', '#FBBF24', '#ffffff', '#FFD1A3'];
+            const shapes = ['circle', 'rect'];
+            
+            for(let i=0; i<80; i++) {
+                const conf = document.createElement('div');
+                const isCircle = shapes[Math.floor(Math.random() * shapes.length)] === 'circle';
+                
+                conf.className = `absolute opacity-90 ${isCircle ? 'rounded-full' : 'rounded-sm'}`;
+                
+                const size = Math.random() * 8 + 6;
+                conf.style.width = `${size}px`;
+                conf.style.height = `${isCircle ? size : size * 1.5}px`;
+                
+                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.left = Math.random() * 100 + '%';
+                conf.style.top = '-10%';
+                
+                const duration = Math.random() * 2 + 1.5;
+                const delay = Math.random() * 0.5;
+                
+                conf.animate([
+                    { transform: `translate3d(0,0,0) rotate(0deg)`, opacity: 1 },
+                    { transform: `translate3d(${Math.random()*200 - 100}px, 120vh, 0) rotate(${Math.random()*1080}deg)`, opacity: 0 }
+                ], {
+                    duration: duration * 1000,
+                    delay: delay * 1000,
+                    easing: 'cubic-bezier(.37,0,.63,1)',
+                    fill: 'forwards'
+                });
+                
+                container.appendChild(conf);
+            }
+        }
+    </script>
+</body>
+</html>
